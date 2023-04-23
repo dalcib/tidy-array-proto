@@ -39,7 +39,9 @@ const tidyFns = [
   "totalAt",
   "totalIf",
   "transmute"
-  "when"
+  "when",
+  "pivotLonger",
+  "pivotWider"
 ];
 
 tidyFns.forEach((fn) => {
