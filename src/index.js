@@ -3,27 +3,27 @@ import * as T from "@tidyjs/tidy";
 
 const tidyFns = [
   "addItems",
-  "addRows",
+  //"addRows",
   "arrange",
-  "sort",
+  //"sort",
   "complete",
   "count",
   "debug",
   "distinct",
   "expand",
-  "fill",
-  "filter",
+  //"fill",
+  //"filter",
   "fullJoin",
   "groupBy",
   "innerJoin",
   "leftJoin",
-  "map",
+  //"map",
   "mutate",
   "mutateWithSummary",
   "rename",
   "replaceNully",
-  "select / pick",
-  "slice",
+  "select", "pick",
+  //"slice",
   "sliceHead",
   "sliceTail",
   "sliceMin",
@@ -39,7 +39,7 @@ const tidyFns = [
   "totalAt",
   "totalIf",
   "transmute"
-  //"when"
+  "when"
 ];
 
 tidyFns.forEach((fn) => {
