@@ -12,7 +12,8 @@
     "jest": "^22.1.4"
   },
   "dependencies": {
-    "@tidyjs/tidy": "2.5.2",
-    "d3-array": "3.2.3"
+    "@tidyjs/tidy": "^2.5.2",
+    "d3-array": "3.2.3",
+    "typescript": "^5.1.3"
   }
 }
