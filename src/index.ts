@@ -1,15 +1,16 @@
 import * as T from "@tidyjs/tidy";
-import { TidyFn } from '@tidyjs/tidy';
+import { TidyFn, summarize, summarizeIf, sum } from '@tidyjs/tidy';
 
 declare global {
-  interface Array<T> {
-    //tidy: TidyFn<T>;
+  interface Array<T extends object> {
+    [fn: string]: TidyFn<T>;
     select: TidyFn<T>;
     mutate: TidyFn<T>;
     arrange: TidyFn<T>;
     rename: TidyFn<T>;
     distinct: TidyFn<T>;
-    summarize: TidyFn<T>;
+    summarize: typeof summarize;
+    summarizeIf: typeof summarizeIf;
     transmute: TidyFn<T>;
     groupBy: TidyFn<T>;
     ungroup: TidyFn<T>;
@@ -26,7 +27,6 @@ declare global {
     flatten: TidyFn<T>;
     pivotWider: TidyFn<T>;
     pivotLonger: TidyFn<T>;
-    //join: TidyFn<T>;
     leftJoin: TidyFn<T>;
     rightJoin: TidyFn<T>;
     fullJoin: TidyFn<T>;
@@ -37,7 +37,7 @@ declare global {
   }
 }
 
-const tidyFns = [
+/*const tidyFns = [
   "addItems",
   //"addRows",
   "arrange",
@@ -74,14 +74,59 @@ const tidyFns = [
   "totalAll",
   "totalAt",
   "totalIf",
-  "transmute",
+  "transmute"
   "when",
   "pivotLonger",
   "pivotWider"
+];*/
+
+const tidyFns: (keyof typeof T)[] = [
+  "select",
+  "mutate",
+  "arrange",
+  "rename",
+  "distinct",
+  "summarize",
+  "transmute",
+  "groupBy",
+  "ungroup",
+  "count",
+  "head",
+  "tail",
+  "peek",
+  "union",
+  "intersect",
+  "subtract",
+  "spread",
+  "nest",
+  "unnest",
+  "flatten",
+  "pivotWider",
+  "pivotLonger",
+  "leftJoin",
+  "rightJoin",
+  "fullJoin",
+  "innerJoin",
+  "crossJoin",
+  "semiJoin",
+  "antiJoin",
 ];
 
-tidyFns.forEach((fn: string) => {
-  Array.prototype[fn] = function () {
-    return T[fn].apply(null, arguments)(this);
+tidyFns.forEach((fn) => {
+  Array.prototype[fn] = function (this: TidyFn<any>[], ...args: any[]) {
+    return T[fn].apply(null, args)(this);
   };
 });
+
+const data = [
+  { str: 'foo1', value2: 3, value: 3 },
+  { str: 'bar1', value2: 4, value: 1 },
+  { str: 'baz1', value2: 5, value: 3 },
+  { str: 'foo2', value2: 1, value: 1 },
+  { str: 'bar2', value2: 10, value: 7 },
+];
+
+// if first value for a key is numeric, summarize that column
+data.summarizeIf((vector) => Number.isFinite(vector[0]), sum)
+// output:
+//[{ value: 15, value2: 23 }]
